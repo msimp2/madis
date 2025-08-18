@@ -1,0 +1,6 @@
+@madis_HostAddress = http://localhost:5178
+
+GET {{madis_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

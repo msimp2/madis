@@ -1,7 +1,9 @@
-﻿import { showGrid, hideGrid, getCurrentGridColor } from './Overlay/latlon.js';
+﻿import { showGrid, hideGrid } from './Overlay/latlon.js';
 import { setupBasemapSelector } from './Overlay/basemap.js';
 import { addStatesLayer, removeStatesLayer, updateStatesLayerColor } from './Overlay/states.js';
 import { addCountiesLayer, removeCountiesLayer, updateCountiesLayerColor, updateCountiesNamesVisibility } from './Overlay/counties.js';
+import { buildmadisUrl, fetchAndPlotMadisData, setupMadisInputListeners } from './madis.js';
+
 
 var map = L.map('map').setView([40, -100], 6);
 setupBasemapSelector(map);
@@ -125,4 +127,40 @@ countiesNamesCheckbox.addEventListener('change', function () {
     if (countiesCheckbox.checked) {
         updateCountiesNamesVisibility(map, countiesNamesCheckbox.checked);
     }
+});
+
+
+
+
+// Plot pcp1h
+document.addEventListener('DOMContentLoaded', () => {
+    const pcp1h = document.getElementById('pcp1h');
+    if (!pcp1h) {
+        console.error('Plot button not found!');
+        return;
+    }
+    pcp1h.addEventListener('click', () => {
+        const dateInput = document.getElementById('datePicker').value; // yyyy-mm-dd
+        let hourInput = document.getElementById('hourPicker').value; // H or HH
+
+        if (!dateInput || hourInput === '') {
+            alert('Please select both date and hour.');
+            return;
+        }
+
+        // Format date as yyyymmdd
+        const yyyymmdd = dateInput.replace(/-/g, '');
+
+        // Pad hour to HH
+        hourInput = hourInput.padStart(2, '0');
+
+        // Build URL and plot
+        const madisUrl = buildmadisUrl(yyyymmdd, hourInput, '00', 0, 0, 'PCP1H');
+        console.log(madisUrl);
+
+        const proxyUrl = `/api/madisproxy?url=${encodeURIComponent(madisUrl)}`;
+        fetchAndPlotMadisData(proxyUrl, window.map);
+        setupMadisInputListeners(map);
+
+    });
 });

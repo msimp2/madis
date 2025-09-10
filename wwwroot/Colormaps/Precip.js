@@ -1,5 +1,5 @@
 ﻿// Jet colormap function: returns a hex color for a value between vmin and vmax
-export function jetColor(value, vmin = 0, vmax = 50) {
+export function jetColor(value, vmin, vmax) {
     value = Math.max(vmin, Math.min(vmax, value));
 const dv = vmax - vmin;
 let r = 1, g = 1, b = 1;

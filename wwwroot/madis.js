@@ -75,7 +75,7 @@ function plotMadisData(map) {
     const upperValue = !upperValueInput || isNaN(parseFloat(upperValueInput)) ? Infinity : parseFloat(upperValueInput);
 
     const unit = 'mm';
-    const { vmin, vmax } = getColormapBounds();
+    const { vmin, vmax } = getColorbarBoundsFromInputs();
 
     for (const item of window.madisData) {
         const { stationId, obvTime, provider, value, lat, lon } = item;
@@ -111,7 +111,16 @@ function plotMadisData(map) {
     });
 }
 
-// Listen for changes in lat/lon input fields and update the map automatically
+// Get the colorbar bounds based on user input. 
+export function getColorbarBoundsFromInputs() {
+    const lowerInput = document.getElementById('colorbar-lowervalue');
+    const upperInput = document.getElementById('colorbar-uppervalue');
+    const vmin = lowerInput && !isNaN(parseFloat(lowerInput.value)) ? parseFloat(lowerInput.value) : 0;
+    const vmax = upperInput && !isNaN(parseFloat(upperInput.value)) ? parseFloat(upperInput.value) : 50;
+    return { vmin, vmax };
+}
+
+// Listen for changes in fields and update the map automatically
 export function setupMadisInputListeners(map) {
     const inputIds = [
         'madis-lowerlat',
@@ -119,7 +128,9 @@ export function setupMadisInputListeners(map) {
         'madis-lowerlon',
         'madis-upperlon',
         'madis-lowervalue',
-        'madis-uppervalue'
+        'madis-uppervalue',
+        'colorbar-lowervalue',
+        'colorbar-uppervalue'
     ];
     inputIds.forEach(id => {
         const input = document.getElementById(id);

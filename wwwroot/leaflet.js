@@ -36,14 +36,6 @@ function updateClocks() {
     }
 }
 
-// Start the clocks when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    updateClocks();
-    setInterval(updateClocks, 1000);
-});
-
-// --- END CLOCKS ---
-
 const tileLayerUrls = {
     default: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
@@ -130,11 +122,28 @@ countiesNamesCheckbox.addEventListener('change', function () {
     }
 });
 
-
-
-
 // Plot pcp1h
 document.addEventListener('DOMContentLoaded', () => {
+
+    // Clocks
+    updateClocks();
+    setInterval(updateClocks, 1000);
+
+    // USA button for lat/lon bounds
+    const usaBtn = document.getElementById('usa-latlon-btn');
+    if (usaBtn) {
+        usaBtn.addEventListener('click', () => {
+            document.getElementById('madis-lowerlat').value = 25;
+            document.getElementById('madis-upperlat').value = 50;
+            document.getElementById('madis-lowerlon').value = -125;
+            document.getElementById('madis-upperlon').value = -65;
+        });
+        if (!usaBtn) {
+            console.error('USA Plot button not found!');
+        }
+    }
+
+    // PCP 1h button
     const pcp1h = document.getElementById('pcp1h');
     if (!pcp1h) {
         console.error('Plot button not found!');

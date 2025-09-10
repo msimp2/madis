@@ -10,11 +10,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\docs\Controllers\MadisProxyController.cs" />
+    <Content Remove="docs\Controllers\MadisProxyController.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="wwwroot\docs\Controllers\MadisProxyController.cs" />
+    <Content Include="docs\Colormaps\Bounds.js" />
+    <Content Include="docs\Colormaps\Precip.js" />
+    <Content Include="docs\index.html" />
+    <Content Include="docs\leaflet.js" />
+    <Content Include="docs\madis.js" />
+    <Content Include="docs\Overlay\basemap.js" />
+    <Content Include="docs\Overlay\counties.js" />
+    <Content Include="docs\Overlay\latlon.js" />
+    <Content Include="docs\Overlay\states.js" />
+    <Content Include="docs\site.css" />
   </ItemGroup>
 
   <ItemGroup>

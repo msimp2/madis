@@ -54,6 +54,7 @@ let currentTileLayer = L.tileLayer(tileLayerUrls.default, {
     attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
+
 let gridVisible = false;
 let gridColor = '#888888';
 

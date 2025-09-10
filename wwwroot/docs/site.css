@@ -1,0 +1,83 @@
+﻿/* --- Lat/Lon Grid Label Overlay Styles --- */
+.latlon-labels {
+    pointer-events: none;
+}
+
+    .latlon-labels .lat-label,
+    .latlon-labels .lon-label {
+        position: absolute;
+        background: rgba(255,255,255,0.8);
+        color: #333;
+        font-size: 12px;
+        padding: 1px 4px;
+        border-radius: 3px;
+        z-index: 1200;
+        pointer-events: none;
+        font-family: sans-serif;
+    }
+
+    .latlon-labels .lat-label {
+        left: 2px;
+        transform: translateY(-50%);
+        text-align: right;
+    }
+
+    .latlon-labels .lon-label {
+        bottom: 2px;
+        transform: translateX(-50%);
+        text-align: center;
+    }
+
+/* --- Lat/Lon Grid Modal Styles --- */
+.latlon-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.latlon-modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.latlon-modal-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+    .latlon-modal-close:hover,
+    .latlon-modal-close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+.latlon-modal-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.latlon-modal-error {
+    color: red;
+    font-size: 0.9em;
+    min-height: 1.2em;
+}

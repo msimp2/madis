@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+
+    <!-- Title and Clocks Row -->
+    <div style="display: flex; align-items: center; justify-content: center; margin-top: 24px; margin-bottom: 24px; position: relative;">
+        <!-- Clocks: Local and UTC, absolutely positioned left -->
+        <div style="position: absolute; left: 0; font-size: 1.1em; margin-left: 24px; white-space: nowrap;">
+            <span id="local-clock"></span>
+            &nbsp;|&nbsp;
+            <span id="utc-clock"></span>
+        </div>
+        <h1 style="margin: 0; text-align: center;">
+            Historical MADIS Viewer
+        </h1>
+    </div>
+
+    <div class="container">
+
+        <!-- Flex row: map and sidebar -->
+        <div style="display: flex; flex-direction: row;">
+            <div id="map" style="height: 600px; width: 100%;"></div>
+            <div id="sidebar">
+                <!-- Basemap Selector Dropdown -->
+                <div style="margin-bottom: 8px;">
+                    <label for="basemap-selector">Basemap:</label>
+                    <select id="basemap-selector">
+                        <option value="default">Default</option>
+                        <option value="dark">Dark Mode</option>
+                        <option value="satellite">Satellite</option>
+                    </select>
+                </div>
+                <!-- Lat Lon Grid -->
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 0px;">
+                    <label style="display: flex; align-items: center; gap: 12px; margin: 0;">
+                        <input type="checkbox" id="toggleGridCheckbox" />
+                        <span style="font-size: 0.95em;">Lat/Lon</span>
+                    </label>
+                    <input type="color" id="gridColorInput" value="#888888" style="width: 60px; height: 32px;" />
+                </div>
+                <div id="colorError" class="latlon-modal-error"></div>
+
+                <!-- States overlay checkbox and color input -->
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <input type="checkbox" id="states-checkbox">
+                    <label for="states-checkbox" style="margin: 0 8px 0 0;">States</label>
+                    <input type="color" id="statesColorInput" value="#3388ff" style="width: 60px; height: 32px;" />
+                </div>
+                <!-- Counties overlay checkbox and color input -->
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; margin-top: 16px;">
+                    <input type="checkbox" id="counties-checkbox">
+                    <label for="counties-checkbox" style="margin: 0 -10px 0 0;">Counties</label>
+                    <input type="color" id="countiesColorInput" value="#ff8800" style="width: 60px; height: 32px;" />
+                    <input type="checkbox" id="counties-names-checkbox">
+                    <label for="counties-names-checkbox" style="margin: 0 8px 0 0;">names</label>
+                </div>
+
+                <!-- Censoring data based on lat/lon bounds -->
+                <div style="font-weight: bold; margin-bottom: 8px;">Censoring Data Lat/Lon</div>
+
+                <!-- USA button -->
+                <button id="usa-latlon-btn" style="margin-bottom: 8px;">USA</button>
+
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; margin-top: 16px;">
+                    <label for="madis-lowerlat">Lower Lat:</label> <input type="number" id="madis-lowerlat" style="width: 50px;" />
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; margin-top: 16px;">
+                    <label for="madis-upperlat">Upper Lat:</label> <input type="number" id="madis-upperlat" style="width: 50px;" />
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; margin-top: 16px;">
+                    <label for="madis-lowerlon">Lower Lon:</label> <input type="number" id="madis-lowerlon" style="width: 50px;" />
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; margin-top: 16px;">
+                    <label for="madis-upperlon">Upper Lon:</label> <input type="number" id="madis-upperlon" style="width: 50px;" />
+                </div>
+
+                <!-- Censoring data based on lat/lon bounds -->
+                <div style="font-weight: bold; margin-bottom: 8px;">Censoring Data Limits</div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; margin-top: 16px;">
+                    <label for="madis-lowervalue">Lower Value:</label> <input type="number" id="madis-lowervalue" style="width: 50px;" value="0.1" />
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; margin-top: 16px;">
+                    <label for="madis-uppervalue">Upper Value:</label> <input type="number" id="madis-uppervalue" style="width: 50px;" />
+                </div>
+
+                <!-- Colorbar Bounds -->
+                <div style="font-weight: bold; margin-bottom: 8px;">Colorbar Bounds</div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; margin-top: 16px;">
+                    <label for="colorbar-lowervalue">Lower Value:</label> <input type="number" id="colorbar-lowervalue" style="width: 50px;" value="0" />
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; margin-top: 16px;">
+                    <label for="colorbar-uppervalue">Upper Value:</label> <input type="number" id="colorbar-uppervalue" style="width: 50px;" />
+                </div>
+
+            </div>
+            </div>
+
+        <!-- Time Selector underneath the map -->
+        <div id="date-selector" style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px; align-items: flex-start;">
+            <div style="display: flex; gap: 12px; align-items: flex-start;">
+                <label for="datePicker">Date:</label> <input type="date" id="datePicker" style="width: 140px;" />
+                <label for="hourPicker">Hour:</label> <input type="number" id="hourPicker" min="0" max="23" style="width: 80px;">
+
+            </div>
+            <button id="pcp1h" style="margin-top: 8px;">PCP1H</button>
+        </div>
+
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script type="module" src="leaflet.js"></script>
+</body>
+</html>

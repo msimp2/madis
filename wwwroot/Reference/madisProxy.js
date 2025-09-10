@@ -1,4 +1,4 @@
-﻿async function fetchMadisData(url)
+﻿export async function fetchMadisData(url)
 {
     if (!url || url.trim() === "")
     {

@@ -10,10 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="docs\Controllers\MadisProxyController.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="docs\Colormaps\Bounds.js" />
     <Content Include="docs\Colormaps\Precip.js" />
     <Content Include="docs\index.html" />
@@ -29,10 +25,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\Reference\" />
   </ItemGroup>
 
 </Project>

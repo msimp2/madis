@@ -1,6 +1,7 @@
 ﻿// Build MADIS URL
 import { jetColor, addJetColormapLegend } from './Colormaps/Precip.js';
 import { getColormapBounds } from './Colormaps/Bounds.js';
+import { fetchMadisData } from './Reference/madisProxy.js';
 
 export function buildmadisUrl(startDate, startHour, startMinute, lookBack, lookForward, variable) {
     return `https://madis-data.ncep.noaa.gov/madisPublic1/cgi-bin/madisXmlPublicDir?rdr=&time=${startDate}_${startHour}00&minbck=-0&minfwd=0&recwin=4&dfltrsel=0&state=AK&latll=0.0&lonll=0.0&latur=90.0&lonur=0.0&stanam=&stasel=0&pvdrsel=0&varsel=1&qctype=0&qcsel=0&xml=5&csvmiss=0&nvars=PCP1H&nvars=LAT&nvars=LON`;
@@ -9,9 +10,13 @@ export function buildmadisUrl(startDate, startHour, startMinute, lookBack, lookF
 
 // Fetch, parse, and plot CSV
 export async function fetchAndPlotMadisData(url, map) {
-
-    const response = await fetch(url);
-    const text = await response.text();
+    let text;
+    try {
+        text = await fetchMadisData(url);
+    } catch (error) {
+        alert(error.message);
+        return;
+    }
     const lines = text.trim().split('\n');
     if (lines.length < 2) return;
 
